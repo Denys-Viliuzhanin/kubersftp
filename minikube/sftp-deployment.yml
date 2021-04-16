@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sftp-deployment
+  labels:
+    app: sftp-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sftp-service
+  template:
+    metadata:
+      labels:
+        app: sftp-service
+    spec:
+      volumes:
+      - name: sftp-storage
+        persistentVolumeClaim:
+          claimName: sftp-volumeclaim
+      containers:
+      - name: sftp-service
+        image: sftp
+        ports:
+        - containerPort: 22
+        volumeMounts:
+        - mountPath: "/sftp"
+          name: sftp-storage
+        imagePullPolicy: Never

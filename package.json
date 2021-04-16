@@ -1,0 +1,15 @@
+{
+  "name": "sftp-service",
+  "version": "1.0.0",
+  "description": "SFTP Service",
+  "type": "module",
+  "scripts": {
+    "minikube-open-port": "minikube service --url sftp-service",
+    "minikube-deploy": "node ./minikube/minikube-deploy.js"
+  },
+  "author": "Denys Viliuzhanin (denys.viliuzhanin@gmail.com)",
+  "license": "",
+  "dependencies": {
+    "yaml": "^1.10.2"
+  }
+}
