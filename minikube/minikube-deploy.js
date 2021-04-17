@@ -3,10 +3,13 @@ import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'fs'
 import YAML from 'yaml'
 
 let buildNumber = Date.now()
-let tag =`sftp:${buildNumber}`
+let image = "sftp"
+let tag =`${image}:${buildNumber}`
 
 const BUILD_FOLDER = folder('./build')
 const KUBER_BUILD_FOLDER = folder(`${BUILD_FOLDER}/minikube-${buildNumber}`)
+
+clearOldImages(image)
 
 processSpec('./minikube/sftp-deployment.yml',
             `${KUBER_BUILD_FOLDER}/sftp-deployment.yml`,
@@ -25,15 +28,25 @@ exec(`kubectl apply -f ${KUBER_BUILD_FOLDER}/sftp-volumeclaim.yml`)
 exec(`kubectl apply -f ${KUBER_BUILD_FOLDER}/sftp-deployment.yml`)
 exec(`kubectl apply -f ${KUBER_BUILD_FOLDER}/sftp-service.yml`)
 
+function clearOldImages(image) {
+    let output = execSync('minikube image ls').toString()
+    output.split('\n')
+          .filter(s => s.includes(`docker.io/library/${image}:`))
+          .forEach(s => {
+            exec(`minikube image rm ${s}`)
+          })
+}
 
 function exec(command) {
     console.log(`Execute: ${command}`)
     console.log("=============================================")
-    execSync(
+    
+    let output = execSync(
         command,
         {stdio: 'inherit'}
     )  
     console.log("=============================================")  
+    return output
 }
 
 function folder(path) {
