@@ -1,0 +1,15 @@
+FROM node
+
+RUN mkdir /app && mkdir /app/publisher
+
+COPY ./publisher.js /app/publisher
+COPY ./package.json /app/publisher
+COPY ./publisher.sh /app/publisher
+
+
+WORKDIR /app/publisher
+
+RUN chmod +x publisher.js
+RUN npm install
+
+ENTRYPOINT ["./publisher.sh"]

@@ -4,12 +4,15 @@
   "description": "SFTP Service",
   "type": "module",
   "scripts": {
-    "minikube-open-port": "minikube service --url sftp-service",
-    "minikube-deploy": "node ./minikube/minikube-deploy.js"
+    "minikube-open-port-sftp": "kubectl port-forward service/sftp-service 31022:30022",
+    "minikube-open-port-publisher": "minikube service --url publisher-service",
+    "minikube-deploy-sftp": "node ./minikube/sftp-minikube-deploy.js",
+    "minikube-deploy-publisher" : "node ./minikube/publisher-minikube-deploy.js"
   },
   "author": "Denys Viliuzhanin (denys.viliuzhanin@gmail.com)",
   "license": "",
   "dependencies": {
-    "yaml": "^1.10.2"
+    "yaml": "^1.10.2",
+    "express" : "^4.17.1"
   }
 }
